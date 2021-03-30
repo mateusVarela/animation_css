@@ -1,49 +1,46 @@
-const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d');
+const canvas = document.getElementById('canvas')
 
-const ball = {
-  x: 5,
-  y: 5,
-  vx: 5,
-  vy: 2,
-  radius: 3,
-  color: 'rgb(209,255,221)',
-  draw: function() {
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
-    ctx.closePath();
-    ctx.fillStyle = this.color;
-    ctx.fill();
-  }
-};
+function Ball() {
+  this.x = Math.floor(Math.random() * 200)
+  this.y = Math.floor(Math.random() * 200)
+  this.vx = Math.floor(Math.random() * 5)
+  this.vy = Math.floor(Math.random() * 4)
+  this.radius = Math.floor(Math.random() * 20)
+  this.color = 'rgb(209,255,221)'
 
-function clear() {
-    ctx.fillStyle = 'rgba(20, 20, 20, 0.6)';
-    ctx.fillRect(0,0,canvas.width,canvas.height);
+  const ctx = canvas.getContext('2d')
+
+  this.draw = () => {
+    ctx.beginPath()
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true)
+    ctx.closePath()
+    ctx.fillStyle = this.color
+    ctx.fill()
+    return this
   }
 
-function draw() {
-  clear()
-  ball.draw();
-  ball.x += ball.vx;
-  ball.y += ball.vy;
-  const raf = window.requestAnimationFrame(draw);
-  
-  if (ball.y + ball.vy > canvas.height || ball.y + ball.vy < 0) {
-    ball.vy = -ball.vy;
+  this.clear = () => {
+    ctx.fillStyle = 'rgba(20, 20, 20, 0.6)'
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
   }
-  if (ball.x + ball.vx > canvas.width || ball.x + ball.vx < 0) {
-    ball.vx = -ball.vx;
-  }
-
 }
 
-canvas.addEventListener('mouseover', function(e) {
-  raf = window.requestAnimationFrame(draw);
-});
+function move(ball) {
+  ball.clear()
+  ball.draw()
+  ball.x += ball.vx
+  ball.y += ball.vy
+  window.requestAnimationFrame(() => move(ball))
 
-canvas.addEventListener('mouseout', function(e) {
-  window.cancelAnimationFrame(raf);
-});
+  if (ball.y + ball.vy > canvas.height || ball.y + ball.vy < 0) {
+    ball.vy = -ball.vy
+  }
+  if (ball.x + ball.vx > canvas.width || ball.x + ball.vx < 0) {
+    ball.vx = -ball.vx
+  }
+}
 
-ball.draw();
+canvas.addEventListener('click', function (e) {
+  const ball = new Ball()
+  move(ball)
+})
