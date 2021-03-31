@@ -1,12 +1,20 @@
 const canvas = document.getElementById('canvas')
 
+function gerarCor(opacidade = 1) {
+  let r = Math.random() * 255;
+  let g = Math.random() * 255;
+  let b = Math.random() * 255;
+  
+  return `rgba(${r}, ${g}, ${b}, ${opacidade})`;
+}
+
 function Ball() {
-  this.x = Math.floor(Math.random() * 200)
-  this.y = Math.floor(Math.random() * 200)
-  this.vx = Math.floor(Math.random() * 5)
+  this.x = Math.floor(Math.random() * 100)
+  this.y = Math.floor(Math.random() * 150)
+  this.vx = Math.floor(Math.random() * 10)
   this.vy = Math.floor(Math.random() * 4)
   this.radius = Math.floor(Math.random() * 20)
-  this.color = 'rgb(209,255,221)'
+  this.color = gerarCor()
 
   const ctx = canvas.getContext('2d')
 
